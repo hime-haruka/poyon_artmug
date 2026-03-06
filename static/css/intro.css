@@ -1,0 +1,284 @@
+/* ==============================
+   Intro Section
+============================== */
+
+.introSection{
+  position: relative;
+  padding: 140px 0 80px;
+  overflow: visible;
+  background: #fff;
+}
+
+.introSection .inner{
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.introCard{
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 430px);
+  gap: 28px;
+  align-items: stretch;
+  padding: 34px;
+  border: 2px solid var(--ink, #2a2a2a);
+  border-radius: 34px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(0,0,0,.08);
+  overflow: visible;
+  isolation: isolate;
+}
+
+.introCard::before{
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid #e8d9f4;
+  border-radius: 26px;
+  pointer-events: none;
+  background: #fff;
+}
+
+.introCard::after{
+  display: none;
+}
+
+.introCard__ear{
+  position: absolute;
+  top: -60px;
+  width: 112px;
+  height: 86px;
+  background-image: var(--ear-img);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  pointer-events: none;
+  z-index: -7;
+}
+
+.introCard__ear--left{
+  left: 30px;
+}
+
+.introCard__ear--right{
+  right: 30px;
+  transform: scaleX(-1);
+}
+
+.introCard__left,
+.introCard__right{
+  position: relative;
+  z-index: 1;
+}
+
+.introCard__left{
+  padding: 18px 10px 6px 6px;
+}
+
+.introBadge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 16px;
+  margin-bottom: 18px;
+  border: 2px solid #cfaedc;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f8edff 0%, #ffe8f1 52%, #fff6db 100%);
+  box-shadow: 0 5px 0 rgba(0,0,0,.06);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.introBadge::before{
+  content: "✦";
+  font-size: 13px;
+}
+
+.introTitle{
+  margin: 0 0 16px;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.18;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink, #2a2a2a);
+}
+
+.introTextBox{
+  position: relative;
+  padding: 26px 26px 24px;
+  border: 2px solid #d8b7e8;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fcf7ff 0%, #fff1f7 48%, #fffaf0 100%);
+  box-shadow: 0 10px 18px rgba(0,0,0,.06);
+}
+
+.introTextBox::before{
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 18px;
+  height: 18px;
+  background:
+    linear-gradient(#c693bc, #c693bc) center / 100% 2px no-repeat,
+    linear-gradient(#c693bc, #c693bc) center / 2px 100% no-repeat;
+  transform: rotate(45deg);
+}
+
+.introText{
+  margin: 0;
+  white-space: pre-line;
+  font-size: 16px;
+  line-height: 1.9;
+  color: #4a4350;
+  word-break: keep-all;
+}
+
+.introCard__right{
+  display: flex;
+  align-items: stretch;
+  padding-top: 24px;
+}
+
+.slotPanel{
+  position: relative;
+  width: 100%;
+  padding: 22px 18px 18px;
+  border: 2px solid #d7b5e6;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #fcf7ff 0%, #fff1f7 54%, #fff9ed 100%);
+  box-shadow: 0 12px 22px rgba(0,0,0,.08);
+}
+
+.slotPanel__head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #ecdff5;
+}
+
+.slotPanel__title{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.slotPanel__title::before{
+  content: "♡";
+  font-size: 14px;
+  color: #c88db2;
+}
+
+.slotPanel__legend{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.slotLegend{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6f6172;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.slotLegend__mark{
+  font-size: 13px;
+  line-height: 1;
+  color: #9f7ab6;
+}
+
+.slotGrid{
+  display: grid;
+  gap: 12px;
+}
+
+.slotRow{
+  display: grid;
+  grid-template-columns: 68px repeat(3, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.slotMonth{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 2px solid #d6b7e6;
+  border-radius: 16px;
+  background: #fffdfd;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 4px 0 rgba(0,0,0,.05);
+}
+
+.slotCell{
+  position: relative;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 2px solid #d7b7e4;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 rgba(0,0,0,.05);
+}
+
+.slotCell.is-open{
+  background: linear-gradient(135deg, #fff9e9 0%, #fff2c8 100%);
+  border-color: #e5d28e;
+}
+
+.slotCell.is-closed{
+  background: linear-gradient(135deg, #fff0f6 0%, #ffdce9 100%);
+  border-color: #dfb2ca;
+}
+
+.slotCell.is-unknown{
+  background: #faf7fb;
+  border-color: #ddd2e7;
+}
+
+.slotCell__mark{
+  font-size: 12px;
+  line-height: 1;
+  color: #9f7ab6;
+}
+
+.slotCell__label{
+  position: relative;
+  z-index: 1;
+  color: #4b4450;
+}
+
+.introLoading,
+.introError{
+  padding: 24px;
+  border: 2px dashed #dccce8;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #6a6270;
+  background: #fffafd;
+}

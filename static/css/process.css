@@ -1,0 +1,165 @@
+/* ==============================
+   Process Section
+============================== */
+.processSection{
+  padding:100px 0;
+}
+
+.processSection .inner{
+  width:min(1180px, calc(100% - 40px));
+  margin:auto;
+}
+
+.processWrap{
+  position: relative;
+  padding: 50px 40px 40px;
+  border: 2px solid #2a2a2a;
+  border-radius: 36px;
+  background: #fff;
+  box-shadow: 0 18px 34px rgba(0,0,0,.08);
+  overflow: visible;
+  isolation: isolate;
+}
+
+.processWrap::before{
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid var(--line-soft-lilac, #e8d9f4);
+  border-radius: 28px;
+  background: transparent;
+  pointer-events: none;
+  z-index: 0;
+  background-color: #fff;
+}
+
+.processHeader,
+.processGrid{
+  position: relative;
+  z-index: 1;
+}
+
+.processEar{
+  position:absolute;
+  top:-60px;
+  width:110px;
+  height:90px;
+  background-image:var(--ear-img);
+  background-size:contain;
+  background-repeat:no-repeat;
+  pointer-events:none;
+  z-index:-1;
+}
+
+.processEar--left{
+  left:20px;
+}
+
+.processEar--right{
+  right:20px;
+  transform:scaleX(-1);
+}
+
+.processHeader{
+  margin-bottom:40px;
+}
+
+.processBadge{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  border:2px solid #d8b7e8;
+  background:linear-gradient(135deg,#f8edff,#ffe8f1,#fff6db);
+  font-weight:800;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.processTitle{
+  font-size:40px;
+  font-weight:900;
+}
+
+.processGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.processCard{
+  position:relative;
+  padding:26px 24px;
+  border:2px solid #d8b7e8;
+  border-radius:26px;
+  background:linear-gradient(135deg,#fcf7ff,#fff1f7,#fffaf0);
+  box-shadow:0 10px 18px rgba(0,0,0,.05);
+}
+
+.stepNum{
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  border:2px solid #d8b7e8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:14px;
+  margin-bottom:10px;
+  background:#fff;
+}
+
+.processCard h3{
+  font-size:18px;
+  margin-bottom:6px;
+  font-weight:800;
+}
+
+.processCard p{
+  font-size:15px;
+  line-height:1.7;
+  color:#6f6172;
+  font-weight:600;
+}
+
+.processCard::after{
+  content:"";
+  position:absolute;
+  width:120px;
+  height:120px;
+  top:14px;
+  right:16px;
+  opacity:.35;
+  pointer-events:none;
+  z-index:0;
+
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 42%,
+      #f3d8e7 42%,
+      #f3d8e7 58%,
+      transparent 58%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 42%,
+      #e2d9f5 42%,
+      #e2d9f5 58%,
+      transparent 58%
+    );
+}
+
+.processCard{
+  position:relative;
+  overflow:hidden;
+}
+
+.processCard > *{
+  position:relative;
+  z-index:1;
+}

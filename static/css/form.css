@@ -1,0 +1,668 @@
+/* ==============================
+   Form Section
+============================== */
+
+.formSection{
+  position: relative;
+  padding: 100px 0 120px;
+  overflow: visible;
+}
+
+.formSection .inner{
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ------------------------------
+   Wrap
+------------------------------ */
+.formWrap{
+  position: relative;
+  padding: 42px 30px 34px;
+  border: 2px solid var(--ink, #2a2a2a);
+  border-radius: 34px;
+  background: #fff;
+  box-shadow: 0 16px 30px rgba(0,0,0,.08);
+  overflow: visible;
+  isolation: isolate;
+}
+
+.formWrap::before{
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid var(--line-soft-lilac, #e8d9f4);
+  border-radius: 26px;
+  pointer-events: none;
+  z-index: 0;
+  background: transparent;
+  background-color: #fff;
+}
+
+/* ------------------------------
+   Ears
+------------------------------ */
+.formEar{
+  position: absolute;
+  top: -60px;
+  width: 112px;
+  height: 86px;
+  background-image: var(--ear-img);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.formEar--left{ left: 18px; }
+.formEar--right{
+  right: 18px;
+  transform: scaleX(-1);
+}
+
+/* ------------------------------
+   Header
+------------------------------ */
+.formHeader{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.formBadge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 42px;
+  padding: 8px 16px;
+  border: 2px solid #d8b7e8;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f8edff 0%, #ffe8f1 52%, #fff6db 100%);
+  box-shadow: 0 5px 0 rgba(0,0,0,.05);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-deep-muted, #4b4450);
+}
+
+.formBadge::before{
+  content: "✦";
+  font-size: 13px;
+}
+
+.formTitle{
+  margin: 0;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  font-weight: 900;
+  color: var(--ink, #2a2a2a);
+}
+
+.formLead{
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-soft-muted, #6f6172);
+  font-weight: 700;
+  word-break: keep-all;
+}
+
+/* ------------------------------
+   Layout
+------------------------------ */
+.formLayout{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* ------------------------------
+   Panels
+------------------------------ */
+.formPanel,
+.formCalc{
+  position: relative;
+  border: 2px solid #d8b7e8;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fcf7ff 0%, #fff1f7 45%, #fffaf0 100%);
+  box-shadow: 0 10px 18px rgba(0,0,0,.05);
+  overflow: hidden;
+}
+
+.formPanel::before,
+.formCalc::before{
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1.5px solid rgba(232, 217, 244, .95);
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.formPanel::after,
+.formCalc::after{
+  content: "";
+  position: absolute;
+  width: 116px;
+  height: 116px;
+  opacity: .22;
+  pointer-events: none;
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 42%,
+      #f3d8e7 42%,
+      #f3d8e7 58%,
+      transparent 58%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 42%,
+      #e2d9f5 42%,
+      #e2d9f5 58%,
+      transparent 58%
+    );
+}
+
+.formPanel::after{
+  top: 18px;
+  right: 18px;
+}
+
+.formCalc::after{
+  left: 18px;
+  bottom: 18px;
+}
+
+.formPanel > *,
+.formCalc > *{
+  position: relative;
+  z-index: 1;
+}
+
+.formPanel{
+  padding: 24px 20px 20px;
+}
+
+.formCalc{
+  padding: 24px 20px 20px;
+  position: sticky;
+  top: 24px;
+}
+
+/* ------------------------------
+   Sections inside panel
+------------------------------ */
+.formBlock + .formBlock{
+  margin-top: 22px;
+}
+
+.formBlock__head{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.formBlock__badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 34px;
+  padding: 0 12px;
+  border: 2px solid #dfc7ec;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 4px 0 rgba(0,0,0,.04);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  color: #9d79b0;
+}
+
+.formBlock__title{
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 900;
+  color: var(--text-deep-muted, #4b4450);
+}
+
+.formDivider{
+  height: 2px;
+  background: #efe3f6;
+  margin: 0 0 16px;
+}
+
+/* ------------------------------
+   Base Option Cards
+------------------------------ */
+.baseOptionGrid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.baseOption{
+  position: relative;
+}
+
+.baseOption input{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.baseOption__label{
+  display: block;
+  padding: 18px 18px 16px;
+  border: 2px solid #d8b7e8;
+  border-radius: 22px;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 8px 14px rgba(0,0,0,.04);
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.baseOption__label:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 18px rgba(0,0,0,.05);
+  border-color: #cda2de;
+}
+
+.baseOption__top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.baseOption__chip{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 34px;
+  padding: 0 12px;
+  border: 2px solid #dfc7ec;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 4px 0 rgba(0,0,0,.04);
+  font-size: 12px;
+  font-weight: 900;
+  color: #9d79b0;
+}
+
+.baseOption__price{
+  font-size: 15px;
+  font-weight: 900;
+  color: #5f5070;
+}
+
+.baseOption__title{
+  margin: 0 0 8px;
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 900;
+  color: var(--text-deep-muted, #4b4450);
+}
+
+.baseOption__desc{
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-soft-muted, #6f6172);
+  font-weight: 700;
+  white-space: pre-line;
+}
+
+.baseOption input:checked + .baseOption__label{
+  border-color: #c796df;
+  box-shadow: 0 0 0 3px rgba(222, 189, 238, .35), 0 10px 18px rgba(0,0,0,.05);
+  background: linear-gradient(135deg, #fff 0%, #fdf4ff 55%, #fff8ef 100%);
+}
+
+/* ------------------------------
+   Fields
+------------------------------ */
+.formFieldGrid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formField{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formField.is-full{
+  grid-column: 1 / -1;
+}
+
+.formLabel{
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 900;
+  color: #5f5070;
+}
+
+.formInput,
+.formTextarea,
+.formSelect{
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
+  border: 2px solid #dcc7eb;
+  border-radius: 18px;
+  background: rgba(255,255,255,.9);
+  color: #473e4d;
+  font-size: 15px;
+  line-height: 1.5;
+  box-shadow: 0 6px 0 rgba(0,0,0,.03);
+}
+
+.formTextarea{
+  min-height: 140px;
+  resize: vertical;
+}
+
+.formInput::placeholder,
+.formTextarea::placeholder{
+  color: #9a8fa0;
+}
+
+/* ------------------------------
+   Extra Options
+------------------------------ */
+.optionList{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.optionItem{
+  position: relative;
+  border: 2px solid #dcc7eb;
+  border-radius: 20px;
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 6px 0 rgba(0,0,0,.03);
+  overflow: hidden;
+}
+
+.optionItem__row{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 14px;
+}
+
+.optionItem input[type="checkbox"]{
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: #c796df;
+}
+
+.optionItem__main{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.optionItem__title{
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 900;
+  color: #4b4450;
+}
+
+.optionItem__desc{
+  font-size: 13px;
+  line-height: 1.65;
+  font-weight: 700;
+  color: #7b6d80;
+  white-space: pre-line;
+}
+
+.optionItem__meta{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.optionItem__price{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 2px solid #dfc7ec;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  color: #9d79b0;
+}
+
+.optionQty{
+  width: 84px;
+  min-height: 40px;
+  padding: 10px 12px;
+  border: 2px solid #dcc7eb;
+  border-radius: 14px;
+  background: #fff;
+  text-align: center;
+  font-weight: 800;
+}
+
+.optionQty[disabled]{
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* ------------------------------
+   Summary
+------------------------------ */
+.calcTitle{
+  margin: 0 0 14px;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 900;
+  color: #4b4450;
+}
+
+.calcInfo{
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #746879;
+  font-weight: 700;
+}
+
+.calcSummary{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.calcLine{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 2px solid #eadcf4;
+  border-radius: 18px;
+  background: rgba(255,255,255,.82);
+}
+
+.calcLine__label{
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 800;
+  color: #5d5162;
+}
+
+.calcLine__value{
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 900;
+  color: #453d49;
+  text-align: right;
+  white-space: pre-line;
+}
+
+.calcLine.is-discount .calcLine__value{
+  color: #a05e88;
+}
+
+.calcTotal{
+  padding: 18px 16px;
+  border: 2px solid #d8b7e8;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fff 0%, #fdf4ff 55%, #fff8ef 100%);
+  box-shadow: 0 8px 14px rgba(0,0,0,.04);
+}
+
+.calcTotal__top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.calcTotal__label{
+  font-size: 15px;
+  font-weight: 800;
+  color: #6b5d72;
+}
+
+.calcTotal__value{
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1;
+  font-weight: 900;
+  color: #403646;
+}
+
+.calcNote{
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #7b6d80;
+  font-weight: 700;
+}
+
+.calcActions{
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.calcBtn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 2px solid #d8b7e8;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff 0%, #fdf4ff 55%, #fff8ef 100%);
+  box-shadow: 0 6px 0 rgba(0,0,0,.05);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 900;
+  color: #5a4d5f;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.calcBtn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 9px 0 rgba(0,0,0,.05);
+  border-color: #cda2de;
+}
+
+.formLoading,
+.formError{
+  position: relative;
+  z-index: 1;
+  padding: 28px;
+  border: 2px dashed #dccce8;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #6a6270;
+  background: #fffafd;
+}
+
+
+.formLayout{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.formCalc{
+  padding: 24px 20px 20px;
+  position: relative;
+  top: auto;
+}
+
+.optionList{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.calcSummary{
+  display: grid;
+  grid-template-columns: 1fr 1.2fr .9fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.calcLine{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 100%;
+  padding: 14px 14px;
+  border: 2px solid #eadcf4;
+  border-radius: 18px;
+  background: rgba(255,255,255,.82);
+}
+
+.calcLine__value{
+  text-align: left;
+  white-space: pre-line;
+}
