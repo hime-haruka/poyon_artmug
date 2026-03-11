@@ -6,8 +6,8 @@ const SAMPLE_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQmjeZc1
 const FORM_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQmjeZc1HPOvDIkR5UDDcnxY7MHfYnYFJabW4D6dcQDnpDJsJIifa32hX2l43WUL7R6O5JBoISgEnOp/pub?gid=1580835135&single=true&output=csv";
 const COLLAB_DISCOUNT_CSV_URL = COLLAB_CSV_URL;
 
-function escapeHtml(str) {
-  return String(str ?? "")
+function escapeHtml(value) {
+  return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -15,8 +15,8 @@ function escapeHtml(str) {
     .replaceAll("'", "&#39;");
 }
 
-function escapeAttr(str) {
-  return escapeHtml(str);
+function escapeAttr(value) {
+  return escapeHtml(value);
 }
 
 function parseCsv(csv) {
@@ -81,21 +81,17 @@ function parseCsv(csv) {
 }
 
 async function fetchCsvRows(url) {
-  const response = await fetch(url, { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error(`CSV fetch failed: ${response.status} ${response.statusText}`);
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) {
+    throw new Error(`CSV fetch failed: ${res.status} ${res.statusText}`);
   }
-  const text = await response.text();
+  const text = await res.text();
   return parseCsv(text);
 }
 
 function parsePrice(value) {
-  const normalized = String(value ?? "")
-    .replace(/[^\d.-]/g, "")
-    .trim();
-
+  const normalized = String(value ?? "").replace(/[^\d.-]/g, "").trim();
   if (!normalized) return 0;
-
   const number = Number(normalized);
   return Number.isFinite(number) ? number : 0;
 }
@@ -115,13 +111,10 @@ function formatPriceShort(value) {
 function convertDriveUrlToDirect(url) {
   const value = String(url || "").trim();
   if (!value) return "";
-
   const fileMatch = value.match(/\/file\/d\/([^/]+)/);
   if (fileMatch?.[1]) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
-
   const idMatch = value.match(/[?&]id=([^&]+)/);
   if (idMatch?.[1]) return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
-
   return value;
 }
 
@@ -135,6 +128,13 @@ function mountLoading(targetSelector, html) {
 function normalizeIntroText(rows) {
   if (!Array.isArray(rows) || !rows.length) return "";
   return String(rows[0]?.text || "").trim();
+}
+
+function normalizeSlotValue(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (raw === "open") return { state: "open", label: "OPEN", mark: "○" };
+  if (raw === "closed") return { state: "closed", label: "CLOSED", mark: "●" };
+  return { state: "unknown", label: raw ? raw.toUpperCase() : "-", mark: "–" };
 }
 
 function normalizeIntroSlots(rows) {
@@ -151,24 +151,6 @@ function normalizeIntroSlots(rows) {
     .filter(item => item.month);
 }
 
-function normalizeSlotValue(value) {
-  const raw = String(value || "").trim().toLowerCase();
-
-  if (raw === "open") {
-    return { state: "open", label: "OPEN", mark: "○" };
-  }
-
-  if (raw === "closed") {
-    return { state: "closed", label: "CLOSED", mark: "●" };
-  }
-
-  return {
-    state: "unknown",
-    label: raw ? raw.toUpperCase() : "-",
-    mark: "–"
-  };
-}
-
 function buildIntroTextHtml(text) {
   return `
     <div class="introBadge">Illustrator · Live2D</div>
@@ -180,14 +162,12 @@ function buildIntroTextHtml(text) {
 
 function buildIntroSlotHtml(rows) {
   const rowHtml = rows.map(row => {
-    const cells = row.slots.map(slot => {
-      return `
-        <div class="slotCell is-${escapeAttr(slot.state)}">
-          <span class="slotCell__mark">${escapeHtml(slot.mark)}</span>
-          <span class="slotCell__label">${escapeHtml(slot.label)}</span>
-        </div>
-      `;
-    }).join("");
+    const cells = row.slots.map(slot => `
+      <div class="slotCell is-${escapeAttr(slot.state)}">
+        <span class="slotCell__mark">${escapeHtml(slot.mark)}</span>
+        <span class="slotCell__label">${escapeHtml(slot.label)}</span>
+      </div>
+    `).join("");
 
     return `
       <div class="slotRow">
@@ -409,13 +389,7 @@ function buildCollabSectionHtml(items) {
                 ${item.price ? `<span class="collabCard__price">${escapeHtml(formatPriceShort(item.price))} 할인</span>` : ``}
               </div>
               <div class="collabCard__footer">
-                ${item.link ? `
-                  <a class="collabCard__link" href="${escapeAttr(item.link)}" target="_blank" rel="noopener noreferrer">
-                    아트머그로 이동
-                  </a>
-                ` : `
-                  <span class="collabCard__link is-disabled">링크 준비중</span>
-                `}
+                ${item.link ? `<a class="collabCard__link" href="${escapeAttr(item.link)}" target="_blank" rel="noopener noreferrer">아트머그로 이동</a>` : `<span class="collabCard__link is-disabled">링크 준비중</span>`}
               </div>
             </div>
           </article>
@@ -602,7 +576,6 @@ function normalizeCollabDiscountRows(rows) {
 
 function buildOptionCardHtml(item, type, index) {
   const priceText = formatPriceShort(item.price);
-  const inputName = type === "base" ? "baseOption" : `extraOption-${index}`;
 
   if (type === "base") {
     return `
@@ -675,9 +648,7 @@ function buildFormSectionHtml(pricingData, collabData) {
             <select id="collabSelect" class="formSelect js-collab-select">
               <option value="">선택 안 함</option>
               ${collabData.map((item, index) => `
-                <option value="${escapeAttr(index)}">
-                  ${escapeHtml(item.name)}${item.price ? ` · ${escapeHtml(formatPriceShort(item.price))} 할인` : ""}
-                </option>
+                <option value="${escapeAttr(index)}">${escapeHtml(item.name)}${item.price ? ` · ${escapeHtml(formatPriceShort(item.price))} 할인` : ""}</option>
               `).join("")}
             </select>
           </div>
@@ -807,9 +778,10 @@ function setupFormCalculator(root, pricingData, collabData) {
   }
 
   function getSelectedCollab() {
-    const index = Number(collabSelect?.value);
-    if (!Number.isFinite(index)) return null;
-    return collabData[index] || null;
+    const raw = collabSelect?.value;
+    if (raw === "" || raw == null) return null;
+    const index = Number(raw);
+    return Number.isFinite(index) ? collabData[index] || null : null;
   }
 
   function calculate() {
@@ -876,18 +848,16 @@ function setupFormCalculator(root, pricingData, collabData) {
       extraRequest
     ].join("\n");
 
-    navigator.clipboard.writeText(text)
-      .then(() => {
-        if (!copyBtn) return;
-        const original = copyBtn.textContent;
-        copyBtn.textContent = "복사 완료";
-        setTimeout(() => {
-          copyBtn.textContent = original;
-        }, 1400);
-      })
-      .catch(error => {
-        console.error("copy failed", error);
-      });
+    navigator.clipboard.writeText(text).then(() => {
+      if (!copyBtn) return;
+      const original = copyBtn.textContent;
+      copyBtn.textContent = "복사 완료";
+      setTimeout(() => {
+        copyBtn.textContent = original;
+      }, 1400);
+    }).catch(error => {
+      console.error("copy failed", error);
+    });
   }
 
   function resetFormState() {
@@ -930,10 +900,7 @@ function setupFormCalculator(root, pricingData, collabData) {
     });
   });
 
-  if (collabSelect) {
-    collabSelect.addEventListener("change", calculate);
-  }
-
+  if (collabSelect) collabSelect.addEventListener("change", calculate);
   if (copyBtn) copyBtn.addEventListener("click", copyEstimate);
   if (resetBtn) resetBtn.addEventListener("click", resetFormState);
 
