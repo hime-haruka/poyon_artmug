@@ -111,10 +111,13 @@ function formatPriceShort(value) {
 function convertDriveUrlToDirect(url) {
   const value = String(url || "").trim();
   if (!value) return "";
+
   const fileMatch = value.match(/\/file\/d\/([^/]+)/);
   if (fileMatch?.[1]) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+
   const idMatch = value.match(/[?&]id=([^&]+)/);
   if (idMatch?.[1]) return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+
   return value;
 }
 
@@ -579,7 +582,7 @@ function buildOptionCardHtml(item, type, index) {
 
   if (type === "base") {
     return `
-      <label class="formOptionCard">
+      <label class="formOptionCard is-base">
         <input class="formOptionInput js-base-option" type="radio" name="baseOption" value="${escapeAttr(index)}" ${index === 0 ? "checked" : ""}>
         <span class="formOptionBody">
           <span class="formOptionTitle">${escapeHtml(item.title)}</span>
@@ -590,18 +593,22 @@ function buildOptionCardHtml(item, type, index) {
     `;
   }
 
+  const isUnit = item.calcType === "unit";
+
   return `
-    <div class="formOptionCard is-extra">
+    <div class="formOptionCard is-extra ${isUnit ? "is-unit" : "is-flat"}">
       <label class="formOptionBody">
         <input class="formOptionInput js-extra-option" type="checkbox" data-index="${escapeAttr(index)}">
         <span class="formOptionTitle">${escapeHtml(item.title)}</span>
         <span class="formOptionPrice">${escapeHtml(priceText)}</span>
         ${item.desc ? `<span class="formOptionDesc">${escapeHtml(item.desc)}</span>` : ``}
       </label>
-      <div class="formOptionQty">
-        <span class="formOptionQty__label">수량</span>
-        <input class="formQtyInput js-option-qty" type="number" min="1" step="1" value="1" data-index="${escapeAttr(index)}" disabled>
-      </div>
+      ${isUnit ? `
+        <div class="formOptionQty">
+          <span class="formOptionQty__label">수량</span>
+          <input class="formQtyInput js-option-qty" type="number" min="1" step="1" value="1" data-index="${escapeAttr(index)}" disabled>
+        </div>
+      ` : ``}
     </div>
   `;
 }
@@ -621,39 +628,6 @@ function buildFormSectionHtml(pricingData, collabData) {
 
     <div class="formGrid">
       <div class="formMain">
-        <section class="formBlock">
-          <div class="formBlock__head">
-            <h3 class="formBlock__title">기본 옵션</h3>
-          </div>
-          <div class="formOptionList">
-            ${baseOptions.map((item, index) => buildOptionCardHtml(item, "base", index)).join("")}
-          </div>
-        </section>
-
-        <section class="formBlock">
-          <div class="formBlock__head">
-            <h3 class="formBlock__title">추가 옵션</h3>
-          </div>
-          <div class="formExtraList">
-            ${extraOptions.map((item, index) => buildOptionCardHtml(item, "extra", index)).join("")}
-          </div>
-        </section>
-
-        <section class="formBlock">
-          <div class="formBlock__head">
-            <h3 class="formBlock__title">협업 할인</h3>
-          </div>
-          <div class="formField">
-            <label class="formLabel" for="collabSelect">협업 작가 선택</label>
-            <select id="collabSelect" class="formSelect js-collab-select">
-              <option value="">선택 안 함</option>
-              ${collabData.map((item, index) => `
-                <option value="${escapeAttr(index)}">${escapeHtml(item.name)}${item.price ? ` · ${escapeHtml(formatPriceShort(item.price))} 할인` : ""}</option>
-              `).join("")}
-            </select>
-          </div>
-        </section>
-
         <section class="formBlock">
           <div class="formBlock__head">
             <h3 class="formBlock__title">신청 정보</h3>
@@ -676,6 +650,37 @@ function buildFormSectionHtml(pricingData, collabData) {
             <textarea id="requestDetail" class="formTextarea js-extra-request" rows="5" placeholder="원하는 작업 방향이나 추가 요청사항을 적어주세요."></textarea>
           </div>
         </section>
+
+        <section class="formBlock">
+          <div class="formBlock__head">
+            <h3 class="formBlock__title">기본 옵션</h3>
+          </div>
+          <div class="formOptionList">
+            ${baseOptions.length ? baseOptions.map((item, index) => buildOptionCardHtml(item, "base", index)).join("") : `<div class="formEmpty">기본 옵션 데이터가 없습니다.</div>`}
+          </div>
+        </section>
+
+        <section class="formBlock">
+          <div class="formBlock__head">
+            <h3 class="formBlock__title">추가 옵션</h3>
+          </div>
+          <div class="formExtraList">
+            ${extraOptions.length ? extraOptions.map((item, index) => buildOptionCardHtml(item, "extra", index)).join("") : `<div class="formEmpty">추가 옵션 데이터가 없습니다.</div>`}
+          </div>
+        </section>
+
+        <section class="formBlock">
+          <div class="formBlock__head">
+            <h3 class="formBlock__title">협업 할인</h3>
+          </div>
+          <div class="formField">
+            <label class="formLabel" for="collabSelect">협업 작가 선택</label>
+            <select id="collabSelect" class="formSelect js-collab-select">
+              <option value="">선택 안 함</option>
+              ${collabData.map((item, index) => `<option value="${escapeAttr(index)}">${escapeHtml(item.name)}${item.price ? ` · ${escapeHtml(formatPriceShort(item.price))} 할인` : ""}</option>`).join("")}
+            </select>
+          </div>
+        </section>
       </div>
 
       <aside class="formAside">
@@ -689,21 +694,18 @@ function buildFormSectionHtml(pricingData, collabData) {
               <span class="estimateLabel">기본 옵션</span>
               <strong class="estimateValue js-estimate-base">0원</strong>
             </div>
-
             <div class="estimateDetail js-estimate-base-name">-</div>
 
             <div class="estimateRow">
               <span class="estimateLabel">추가 옵션</span>
               <strong class="estimateValue js-estimate-extra">0원</strong>
             </div>
-
             <div class="estimateDetail js-estimate-extra-list">선택 없음</div>
 
             <div class="estimateRow">
               <span class="estimateLabel">협업 할인</span>
               <strong class="estimateValue js-estimate-discount">0원</strong>
             </div>
-
             <div class="estimateDetail js-estimate-collab-name">선택 없음</div>
 
             <div class="estimateDivider"></div>
@@ -754,10 +756,17 @@ function setupFormCalculator(root, pricingData, collabData) {
   function updateQtyState() {
     extraChecks.forEach(check => {
       const index = Number(check.dataset.index);
+      const option = extraOptions[index];
       const qtyInput = qtyInputs.find(input => Number(input.dataset.index) === index);
+
       if (!qtyInput) return;
-      qtyInput.disabled = !check.checked;
-      if (!check.checked) qtyInput.value = 1;
+
+      const isUnit = option?.calcType === "unit";
+      qtyInput.disabled = !isUnit || !check.checked;
+
+      if (!isUnit || !check.checked) {
+        qtyInput.value = 1;
+      }
     });
   }
 
@@ -768,7 +777,9 @@ function setupFormCalculator(root, pricingData, collabData) {
         const index = Number(check.dataset.index);
         const option = extraOptions[index];
         const qtyInput = qtyInputs.find(input => Number(input.dataset.index) === index);
-        const quantity = Math.max(1, Number(qtyInput?.value || 1));
+        const isUnit = option?.calcType === "unit";
+        const quantity = isUnit ? Math.max(1, Number(qtyInput?.value || 1)) : 1;
+
         return {
           ...option,
           quantity,
@@ -798,25 +809,13 @@ function setupFormCalculator(root, pricingData, collabData) {
     if (baseNameEl) baseNameEl.textContent = base ? `${base.title}${base.desc ? ` · ${base.desc}` : ""}` : "-";
 
     if (extraPriceEl) extraPriceEl.textContent = formatPrice(extraPrice);
-    if (extraListEl) {
-      extraListEl.textContent = extras.length
-        ? extras.map(item => `${item.title} × ${item.quantity}`).join(", ")
-        : "선택 없음";
-    }
+    if (extraListEl) extraListEl.textContent = extras.length ? extras.map(item => `${item.title} × ${item.quantity}`).join(", ") : "선택 없음";
 
     if (discountEl) discountEl.textContent = collab ? `-${formatPrice(discount)}` : formatPrice(0);
     if (collabNameEl) collabNameEl.textContent = collab ? collab.name : "선택 없음";
     if (totalEl) totalEl.textContent = formatPrice(total);
 
-    return {
-      base,
-      extras,
-      collab,
-      basePrice,
-      extraPrice,
-      discount,
-      total
-    };
+    return { base, extras, collab, basePrice, extraPrice, discount, total };
   }
 
   function copyEstimate() {
@@ -834,9 +833,7 @@ function setupFormCalculator(root, pricingData, collabData) {
       result.base ? `${result.base.title} / ${formatPrice(result.basePrice)}` : "-",
       "",
       "[추가 옵션]",
-      result.extras.length
-        ? result.extras.map(item => `${item.title} × ${item.quantity} / ${formatPrice(item.totalPrice)}`).join("\n")
-        : "선택 없음",
+      result.extras.length ? result.extras.map(item => `${item.title} × ${item.quantity} / ${formatPrice(item.totalPrice)}`).join("\n") : "선택 없음",
       "",
       "[협업 할인]",
       result.collab ? `${result.collab.name} / -${formatPrice(result.discount)}` : "선택 없음",

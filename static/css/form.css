@@ -117,7 +117,8 @@
 /* ------------------------------
    Layout
 ------------------------------ */
-.formLayout{
+.formLayout,
+.formGrid{
   position: relative;
   z-index: 1;
   display: grid;
@@ -126,11 +127,24 @@
   align-items: start;
 }
 
+.formMain{
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.formAside{
+  min-width: 0;
+}
+
 /* ------------------------------
    Panels
 ------------------------------ */
 .formPanel,
-.formCalc{
+.formCalc,
+.formBlock,
+.formEstimate{
   position: relative;
   border: 2px solid #d8b7e8;
   border-radius: 28px;
@@ -140,7 +154,9 @@
 }
 
 .formPanel::before,
-.formCalc::before{
+.formCalc::before,
+.formBlock::before,
+.formEstimate::before{
   content: "";
   position: absolute;
   inset: 8px;
@@ -151,7 +167,9 @@
 }
 
 .formPanel::after,
-.formCalc::after{
+.formCalc::after,
+.formBlock::after,
+.formEstimate::after{
   content: "";
   position: absolute;
   width: 116px;
@@ -179,30 +197,36 @@
     );
 }
 
-.formPanel::after{
+.formPanel::after,
+.formBlock::after{
   top: 18px;
   right: 18px;
 }
 
-.formCalc::after{
+.formCalc::after,
+.formEstimate::after{
   left: 18px;
   bottom: 18px;
 }
 
 .formPanel > *,
-.formCalc > *{
+.formCalc > *,
+.formBlock > *,
+.formEstimate > *{
   position: relative;
   z-index: 1;
 }
 
-.formPanel{
+.formPanel,
+.formBlock{
   padding: 24px 20px 20px;
 }
 
-.formCalc{
+.formCalc,
+.formEstimate{
   padding: 24px 20px 20px;
-  position: sticky;
-  top: 24px;
+  position: relative;
+  top: auto;
 }
 
 /* ------------------------------
@@ -212,7 +236,8 @@
   margin-top: 22px;
 }
 
-.formBlock__head{
+.formBlock__head,
+.formEstimate__head{
   display: flex;
   align-items: center;
   gap: 10px;
@@ -236,7 +261,8 @@
   color: #9d79b0;
 }
 
-.formBlock__title{
+.formBlock__title,
+.formEstimate__title{
   margin: 0;
   font-size: 22px;
   line-height: 1.2;
@@ -253,13 +279,15 @@
 /* ------------------------------
    Base Option Cards
 ------------------------------ */
-.baseOptionGrid{
+.baseOptionGrid,
+.formOptionList{
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
 }
 
-.baseOption{
+.baseOption,
+.formOptionCard:not(.is-extra){
   position: relative;
 }
 
@@ -269,7 +297,14 @@
   pointer-events: none;
 }
 
-.baseOption__label{
+.formOptionCard:not(.is-extra) > .formOptionInput{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.baseOption__label,
+.formOptionCard:not(.is-extra) > .formOptionBody{
   display: block;
   padding: 18px 18px 16px;
   border: 2px solid #d8b7e8;
@@ -280,7 +315,8 @@
   transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
 }
 
-.baseOption__label:hover{
+.baseOption__label:hover,
+.formOptionCard:not(.is-extra) > .formOptionBody:hover{
   transform: translateY(-2px);
   box-shadow: 0 12px 18px rgba(0,0,0,.05);
   border-color: #cda2de;
@@ -310,13 +346,16 @@
   color: #9d79b0;
 }
 
-.baseOption__price{
+.baseOption__price,
+.formOptionCard:not(.is-extra) .formOptionPrice{
   font-size: 15px;
   font-weight: 900;
   color: #5f5070;
 }
 
-.baseOption__title{
+.baseOption__title,
+.formOptionCard:not(.is-extra) .formOptionTitle{
+  display: block;
   margin: 0 0 8px;
   font-size: 20px;
   line-height: 1.3;
@@ -324,7 +363,9 @@
   color: var(--text-deep-muted, #4b4450);
 }
 
-.baseOption__desc{
+.baseOption__desc,
+.formOptionCard:not(.is-extra) .formOptionDesc{
+  display: block;
   margin: 0;
   font-size: 14px;
   line-height: 1.75;
@@ -333,7 +374,8 @@
   white-space: pre-line;
 }
 
-.baseOption input:checked + .baseOption__label{
+.baseOption input:checked + .baseOption__label,
+.formOptionCard:not(.is-extra) > .formOptionInput:checked + .formOptionBody{
   border-color: #c796df;
   box-shadow: 0 0 0 3px rgba(222, 189, 238, .35), 0 10px 18px rgba(0,0,0,.05);
   background: linear-gradient(135deg, #fff 0%, #fdf4ff 55%, #fff8ef 100%);
@@ -363,6 +405,7 @@
   line-height: 1.4;
   font-weight: 900;
   color: #5f5070;
+  margin-top: 20px;
 }
 
 .formInput,
@@ -393,13 +436,15 @@
 /* ------------------------------
    Extra Options
 ------------------------------ */
-.optionList{
+.optionList,
+.formExtraList{
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.optionItem{
+.optionItem,
+.formOptionCard.is-extra{
   position: relative;
   border: 2px solid #dcc7eb;
   border-radius: 20px;
@@ -416,7 +461,27 @@
   padding: 14px 14px;
 }
 
+.formOptionCard.is-extra{
+  padding: 0;
+}
+
+.formOptionCard.is-extra > .formOptionBody{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 14px;
+  cursor: default;
+}
+
 .optionItem input[type="checkbox"]{
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: #c796df;
+}
+
+.formOptionCard.is-extra .formOptionInput{
   width: 20px;
   height: 20px;
   margin-top: 2px;
@@ -429,14 +494,27 @@
   gap: 4px;
 }
 
-.optionItem__title{
+.formOptionCard.is-extra .formOptionBody > .formOptionTitle,
+.formOptionCard.is-extra .formOptionBody > .formOptionDesc{
+  grid-column: 2;
+}
+
+.formOptionCard.is-extra .formOptionBody > .formOptionPrice{
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: start;
+}
+
+.optionItem__title,
+.formOptionCard.is-extra .formOptionTitle{
   font-size: 16px;
   line-height: 1.45;
   font-weight: 900;
   color: #4b4450;
 }
 
-.optionItem__desc{
+.optionItem__desc,
+.formOptionCard.is-extra .formOptionDesc{
   font-size: 13px;
   line-height: 1.65;
   font-weight: 700;
@@ -451,7 +529,8 @@
   gap: 8px;
 }
 
-.optionItem__price{
+.optionItem__price,
+.formOptionCard.is-extra .formOptionPrice{
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -467,7 +546,8 @@
   color: #9d79b0;
 }
 
-.optionQty{
+.optionQty,
+.formQtyInput{
   width: 84px;
   min-height: 40px;
   padding: 10px 12px;
@@ -478,15 +558,32 @@
   font-weight: 800;
 }
 
-.optionQty[disabled]{
+.optionQty[disabled],
+.formQtyInput[disabled]{
   opacity: .45;
   cursor: not-allowed;
+}
+
+.formOptionQty{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
+.formOptionQty__label{
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 800;
+  color: #6f6172;
 }
 
 /* ------------------------------
    Summary
 ------------------------------ */
-.calcTitle{
+.calcTitle,
+.formEstimate__title{
   margin: 0 0 14px;
   font-size: 24px;
   line-height: 1.2;
@@ -502,14 +599,16 @@
   font-weight: 700;
 }
 
-.calcSummary{
+.calcSummary,
+.formEstimate__body{
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 18px;
 }
 
-.calcLine{
+.calcLine,
+.estimateRow{
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -520,14 +619,16 @@
   background: rgba(255,255,255,.82);
 }
 
-.calcLine__label{
+.calcLine__label,
+.estimateLabel{
   font-size: 14px;
   line-height: 1.6;
   font-weight: 800;
   color: #5d5162;
 }
 
-.calcLine__value{
+.calcLine__value,
+.estimateValue{
   font-size: 14px;
   line-height: 1.6;
   font-weight: 900;
@@ -540,7 +641,23 @@
   color: #a05e88;
 }
 
-.calcTotal{
+.estimateDetail{
+  margin: -2px 2px 2px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #7b6d80;
+  font-weight: 700;
+  white-space: pre-line;
+}
+
+.estimateDivider{
+  height: 2px;
+  background: #efe3f6;
+  margin: 6px 0 2px;
+}
+
+.calcTotal,
+.estimateTotal{
   padding: 18px 16px;
   border: 2px solid #d8b7e8;
   border-radius: 22px;
@@ -556,17 +673,24 @@
   margin-bottom: 8px;
 }
 
-.calcTotal__label{
+.calcTotal__label,
+.estimateTotal__label{
   font-size: 15px;
   font-weight: 800;
   color: #6b5d72;
 }
 
-.calcTotal__value{
+.calcTotal__value,
+.estimateTotal__value{
   font-size: clamp(26px, 3vw, 34px);
   line-height: 1;
   font-weight: 900;
   color: #403646;
+}
+
+.estimateTotal__label{
+  display: block;
+  margin-bottom: 8px;
 }
 
 .calcNote{
@@ -577,13 +701,15 @@
   font-weight: 700;
 }
 
-.calcActions{
+.calcActions,
+.formEstimate__actions{
   display: flex;
   gap: 10px;
   margin-top: 16px;
 }
 
-.calcBtn{
+.calcBtn,
+.formActionBtn{
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -601,14 +727,20 @@
   transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
 }
 
-.calcBtn:hover{
+.calcBtn:hover,
+.formActionBtn:hover{
   transform: translateY(-2px);
   box-shadow: 0 9px 0 rgba(0,0,0,.05);
   border-color: #cda2de;
 }
 
+.formActionBtn.is-sub{
+  background: #fff;
+}
+
 .formLoading,
-.formError{
+.formError,
+.formEmpty{
   position: relative;
   z-index: 1;
   padding: 28px;
@@ -620,49 +752,258 @@
   background: #fffafd;
 }
 
-
-.formLayout{
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 22px;
-  align-items: start;
-}
-
-.formCalc{
-  padding: 24px 20px 20px;
-  position: relative;
-  top: auto;
-}
-
-.optionList{
+.formExtraList{
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
-.calcSummary{
-  display: grid;
-  grid-template-columns: 1fr 1.2fr .9fr;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-.calcLine{
+.formOptionCard.is-extra{
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  gap: 8px;
-  min-height: 100%;
-  padding: 14px 14px;
-  border: 2px solid #eadcf4;
-  border-radius: 18px;
-  background: rgba(255,255,255,.82);
+  padding: 0;
+  min-height: 0;
 }
 
-.calcLine__value{
-  text-align: left;
+.formOptionCard.is-extra > .formOptionBody{
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 12px;
+  row-gap: 4px;
+  padding: 14px 14px 10px;
+}
+
+.formOptionCard.is-extra .formOptionInput{
+  position: static;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  opacity: 1;
+  pointer-events: auto;
+  accent-color: #c796df;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.formOptionCard.is-extra .formOptionTitle{
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 900;
+  color: #4b4450;
+}
+
+.formOptionCard.is-extra .formOptionDesc{
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  font-weight: 700;
+  color: #7b6d80;
   white-space: pre-line;
+}
+
+.formOptionCard.is-extra .formOptionPrice{
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: start;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 2px solid #dfc7ec;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  color: #9d79b0;
+}
+
+.formOptionQty{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0 14px 14px;
+  margin-top: 0;
+}
+
+.formOptionQty__label{
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 800;
+  color: #6f6172;
+}
+
+.formQtyInput{
+  width: 84px;
+  min-height: 40px;
+  padding: 10px 12px;
+  border: 2px solid #dcc7eb;
+  border-radius: 14px;
+  background: #fff;
+  text-align: center;
+  font-weight: 800;
+}
+
+.formOptionList{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formExtraList{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formOptionCard{
+  min-height: 0;
+}
+
+.formOptionCard:not(.is-extra) > .formOptionBody{
+  min-height: 132px;
+}
+
+.formOptionCard.is-extra{
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.formOptionCard.is-extra > .formOptionBody{
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 12px;
+  row-gap: 4px;
+  padding: 14px 14px 12px;
+}
+
+.formOptionCard.is-extra .formOptionInput{
+  position: static;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  opacity: 1;
+  pointer-events: auto;
+  accent-color: #c796df;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.formOptionCard.is-extra .formOptionTitle{
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+}
+
+.formOptionCard.is-extra .formOptionDesc{
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+}
+
+.formOptionCard.is-extra .formOptionPrice{
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: start;
+  justify-self: end;
+}
+
+.formOptionCard.is-extra.is-flat .formOptionBody{
+  padding-bottom: 14px;
+}
+
+.formOptionCard.is-extra.is-unit .formOptionQty{
+  display: flex;
+}
+
+.formOptionCard.is-extra.is-flat .formOptionQty{
+  display: none;
+}
+
+.formOptionQty{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0 14px 14px;
+  margin-top: 0;
+}
+
+.formOptionCard.is-extra.is-unit{
+  position: relative;
+}
+
+.formOptionCard.is-extra.is-unit > .formOptionBody{
+  padding-bottom: 12px;
+}
+
+.formOptionCard.is-extra.is-unit .formOptionQty{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 14px 12px;
+  margin-top: -2px;
+}
+
+.formOptionQty__label{
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  color: #8b7692;
+  letter-spacing: -0.02em;
+}
+
+.formQtyInput{
+  width: 58px;
+  min-height: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border: 2px solid #dcc7eb;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: none;
+  text-align: center;
+  font-size: 13px;
+  line-height: 32px;
+  font-weight: 900;
+  color: #6a5a73;
+}
+
+.formQtyInput:focus{
+  outline: none;
+  border-color: #c796df;
+  box-shadow: 0 0 0 3px rgba(199,150,223,.16);
+}
+
+.formQtyInput[disabled]{
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.formOptionCard.is-extra.is-unit .formOptionPrice{
+  align-self: start;
+}
+
+.formOptionCard.is-extra.is-unit .formOptionDesc:empty + .formOptionQty,
+.formOptionCard.is-extra.is-unit .formOptionQty{
+  justify-content: flex-end;
+}
+
+@media (max-width: 820px){
+  .formOptionCard.is-extra.is-unit .formOptionQty{
+    padding: 0 14px 12px;
+  }
 }
