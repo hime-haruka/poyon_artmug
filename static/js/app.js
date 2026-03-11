@@ -628,28 +628,6 @@ function buildFormSectionHtml(pricingData, collabData) {
 
     <div class="formGrid">
       <div class="formMain">
-        <section class="formBlock">
-          <div class="formBlock__head">
-            <h3 class="formBlock__title">신청 정보</h3>
-          </div>
-
-          <div class="formFieldGrid">
-            <div class="formField">
-              <label class="formLabel" for="clientName">닉네임</label>
-              <input id="clientName" class="formInput js-client-name" type="text" placeholder="신청자 닉네임">
-            </div>
-
-            <div class="formField">
-              <label class="formLabel" for="contactInfo">연락처</label>
-              <input id="contactInfo" class="formInput js-contact-info" type="text" placeholder="메일 / 오픈채팅 / SNS">
-            </div>
-          </div>
-
-          <div class="formField">
-            <label class="formLabel" for="requestDetail">추가 요청사항</label>
-            <textarea id="requestDetail" class="formTextarea js-extra-request" rows="5" placeholder="원하는 작업 방향이나 추가 요청사항을 적어주세요."></textarea>
-          </div>
-        </section>
 
         <section class="formBlock">
           <div class="formBlock__head">
@@ -679,6 +657,29 @@ function buildFormSectionHtml(pricingData, collabData) {
               <option value="">선택 안 함</option>
               ${collabData.map((item, index) => `<option value="${escapeAttr(index)}">${escapeHtml(item.name)}${item.price ? ` · ${escapeHtml(formatPriceShort(item.price))} 할인` : ""}</option>`).join("")}
             </select>
+          </div>
+        </section>
+
+                <section class="formBlock">
+          <div class="formBlock__head">
+            <h3 class="formBlock__title">신청 정보</h3>
+          </div>
+
+          <div class="formFieldGrid">
+            <div class="formField">
+              <label class="formLabel" for="clientName">닉네임</label>
+              <input id="clientName" class="formInput js-client-name" type="text" placeholder="신청자 닉네임">
+            </div>
+
+            <div class="formField">
+              <label class="formLabel" for="contactInfo">연락처</label>
+              <input id="contactInfo" class="formInput js-contact-info" type="text" placeholder="메일 / 오픈채팅 / SNS">
+            </div>
+          </div>
+
+          <div class="formField">
+            <label class="formLabel" for="requestDetail">추가 요청사항</label>
+            <textarea id="requestDetail" class="formTextarea js-extra-request" rows="5" placeholder="원하는 작업 방향이나 추가 요청사항을 적어주세요."></textarea>
           </div>
         </section>
       </div>
