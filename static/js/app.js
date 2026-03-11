@@ -672,8 +672,8 @@ function buildFormSectionHtml(pricingData, collabData) {
             </div>
 
             <div class="formField">
-              <label class="formLabel" for="contactInfo">연락처</label>
-              <input id="contactInfo" class="formInput js-contact-info" type="text" placeholder="메일 / 오픈채팅 / SNS">
+              <label class="formLabel" for="contactInfo">플랫폼</label>
+              <input id="contactInfo" class="formInput js-contact-info" type="text" placeholder="치지직 / SOOP 등">
             </div>
           </div>
 
@@ -695,19 +695,16 @@ function buildFormSectionHtml(pricingData, collabData) {
               <span class="estimateLabel">기본 옵션</span>
               <strong class="estimateValue js-estimate-base">0원</strong>
             </div>
-            <div class="estimateDetail js-estimate-base-name">-</div>
 
             <div class="estimateRow">
               <span class="estimateLabel">추가 옵션</span>
               <strong class="estimateValue js-estimate-extra">0원</strong>
             </div>
-            <div class="estimateDetail js-estimate-extra-list">선택 없음</div>
 
             <div class="estimateRow">
               <span class="estimateLabel">협업 할인</span>
               <strong class="estimateValue js-estimate-discount">0원</strong>
             </div>
-            <div class="estimateDetail js-estimate-collab-name">선택 없음</div>
 
             <div class="estimateDivider"></div>
 
@@ -828,7 +825,7 @@ function setupFormCalculator(root, pricingData, collabData) {
     const text = [
       "[신청자 정보]",
       `닉네임: ${nickname}`,
-      `연락처: ${contact}`,
+      `플랫폼: ${contact}`,
       "",
       "[기본 옵션]",
       result.base ? `${result.base.title} / ${formatPrice(result.basePrice)}` : "-",
